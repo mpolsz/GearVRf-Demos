@@ -14,6 +14,7 @@
  */
 package org.gearvrf.sample.controller;
 
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 
 import org.gearvrf.GVRActivity;
@@ -103,6 +104,18 @@ public class SampleMain extends GVRMain
                 newController.setCursorDepth(DEPTH);
                 newController.setCursorControl(GVRCursorController.CursorControl.PROJECT_CURSOR_ON_SURFACE);
                 newController.getPicker().setEventOptions(eventOptions);
+                newController.addControllerEventListener(new GVRCursorController.IControllerEvent() {
+                    @Override
+                    public void onEvent(GVRCursorController controller, boolean isActive) {
+                        if(controller != null && controller.getKeyEvent() != null) {
+                            if(controller.getKeyEvent().getKeyCode() == 29 && controller.getKeyEvent().getAction() == KeyEvent.ACTION_UP) {
+                                if(mainScene != null && mainScene.getMainCameraRig() != null) {
+                                    mainScene.getMainCameraRig().resetYaw();
+                                }
+                            }
+                        }
+                    }
+                });
             }
         });
 
